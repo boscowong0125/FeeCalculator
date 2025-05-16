@@ -58,7 +58,7 @@ You can define multiple thresholds and corresponding rates, then see the calcula
 if 'thresholds' not in st.session_state:
     st.session_state.thresholds = ['2000000', '3000000']
 if 'rates' not in st.session_state:
-    st.session_state.rates = ['1.25', '1.00', '0.75']
+    st.session_state.rates = ['1.25', '0.75', '0.50']
 
 # Input for total amount
 st.subheader("Total AUM")
@@ -138,7 +138,7 @@ for i in range(len(st.session_state.thresholds)):
     
     # Rate input
     st.session_state.rates[i] = cols[2].text_input(
-        f"Rate {i+1}",
+        f"Rate",
         value=st.session_state.rates[i],
         key=f"rate_{i}",
         help=f"Fee percentage for tier {i+1}"
@@ -153,7 +153,7 @@ for i in range(len(st.session_state.thresholds)):
 # Remainder tier
 cols = st.columns([1, 2, 2, 1])
 cols[0].markdown("**Remainder**")
-cols[1].markdown("Amount Remaining")
+# cols[1].markdown("Amount Remaining")
 
 # Ensure rates list has enough elements
 if len(st.session_state.rates) <= len(st.session_state.thresholds):
