@@ -8,6 +8,8 @@ if 'annual_fee' not in st.session_state:
     st.session_state.annual_fee = 0
 if 'daily_fee' not in st.session_state:
     st.session_state.daily_fee = 0
+if 'average_bps' not in st.session_state:
+    st.session_state.average_bps = 0
 if 'tier_data' not in st.session_state:
     st.session_state.tier_data = []
 if 'download_df' not in st.session_state:
@@ -241,6 +243,9 @@ if st.button("Calculate"):
             "Fee ($)": round(daily_fee, 2)
         }
         
+        average_bps = (annual_fee / amount) * 10000
+        st.session_state.average_bps = average_bps
+
         # Create download dataframe and store in session state
         tier_df = pd.DataFrame(tier_data)
         st.session_state.download_df = pd.concat([tier_df, pd.DataFrame([summary_data, daily_data])])
@@ -252,9 +257,10 @@ if st.button("Calculate"):
 if st.session_state.has_calculated:
     # Display results
     st.subheader("Fee Results")
-    results_cols = st.columns(2)
-    results_cols[0].metric("Annual Fee", f"${st.session_state.annual_fee:,.2f}")
-    results_cols[1].metric("Daily Fee Accrual", f"${st.session_state.daily_fee:,.2f}")
+    results_cols = st.columns(3)
+    results_cols[0].metric("Annual Fee ($)", f"${st.session_state.annual_fee:,.2f}")
+    results_cols[1].metric("Daily Fee Accrual ($)", f"${st.session_state.daily_fee:,.2f}")
+    results_cols[2].metric("Average Rate (bps)", f"{round(st.session_state.average_bps)}")
     
     # Display tier details
     st.subheader("Fee Breakdown")
